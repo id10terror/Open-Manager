@@ -11,6 +11,9 @@
 
 #include "graphics.h"
 
+#include <cell/cell_fs.h>
+
+
 
 CellDbgFontConsoleId consoleID = CELL_DBGFONT_STDOUT_ID;
 
@@ -517,6 +520,12 @@ void draw_device_list(u32 flags)
 	float y = 0.1f+ 0.05f*15.0f;
 	char str[256];
 	char ansi[256];
+	
+	uint32_t blockSize;
+	uint64_t freeSize;
+	char strfree[255];
+	float freeamount;
+	char path[255];
 
 	int n,ok=0;
 	float len;
@@ -526,38 +535,69 @@ void draw_device_list(u32 flags)
 	static int cont=0;
 
 	for(n=0;n<12;n++)
-		{
+	{
 		
 		ok=0;
 		if((flags>>n) & 1) ok=1;
 	   
 		if(ok)
-			{
+		{
 			switch(n)
-				{
+			{
 				case 0:
 					sprintf(str, "%s", "hdd0");
+					sprintf(path, "/dev_hdd0/");
 					break;
 				case 11:
 					sprintf(str, "%s", "bdvd");
+					sprintf(path, "/dev_bdvd/");
 					break;
 				default:
 					sprintf(str, "usb%i", n-1);
+					sprintf(path, "/dev_usb00%d/", n-1);
 					break;
+			}
+			
+			cellFsGetFreeSize(path, &blockSize, &freeSize);
+			freeamount =  ((uint64_t)blockSize )* freeSize ;
+			if(freeamount > 999)
+			{
+				freeamount = freeamount /1024;
+				if(freeamount > 999)
+				{
+					freeamount = freeamount / 1024;
+					if(freeamount > 999)
+					{
+						freeamount = freeamount / 1024;
+						sprintf(strfree, "%3.2fGB", freeamount);
+					}
+					else
+					{
+						sprintf(strfree, "%3.2fMB", freeamount);
+					}
 				}
-
+				else
+				{
+					sprintf(strfree, "%3.2fKB", freeamount);
+				}
+			}
+			else
+			{
+				sprintf(strfree, "%3.2fB", freeamount);
+			}
 			len=0.03f*(float)(strlen(str));
 
-			draw_square((x-0.5f)*2.0f-0.02f, (0.5f-y+0.01)*2.0f, len+0.04f, 0.10f, -0.9f, ((flags>>(n+16)) & 1) ? 0x008fffff : 0x0000ffff);
+			draw_square((x-0.5f)*2.0f-0.02f, (0.5f-y+0.025)*2.0f, len+0.04f, 0.15f, -0.9f, ((flags>>(n+16)) & 1) ? 0x008fffff : 0x0000ffff);
 			len=0.02*(float)(strlen(str)+1);
 
-			cellDbgFontPrintf( x, y, 1.2f, 0xffffffff, str);
+			cellDbgFontPrintf( x, y - 0.03, 1.2f, 0xffffffff, str);
+			cellDbgFontPrintf( x - 0.005, y + 0.02 , 0.7f, 0xffffffff, strfree);
 			x+=len;
  
 			if(n==11 && !((flags>>31) & 1)) // only GAME MODE
-				{
+			{
 				if((flags>>11) & 1)
-					{
+				{
 					int m;
 
 					utf8_to_ansi(bluray_game, ansi, 128);
@@ -565,28 +605,28 @@ void draw_device_list(u32 flags)
 					int l=strlen(ansi)+6;
 
 					if(l!=0)
-						{
+					{
 						if(l>64) l=63;
 						for(m=0;m<30;m++) 
-							{
+						{
 							int k=(m+pos) % l;
 							if(ansi[k])
 								str[m]=ansi[k];
 							else str[m]=32;
-							}
+						}
 						str[m]=0;
 
 						cont++; if(cont>=20) {cont=0;pos++;}
 					 
 						cellDbgFontPrintf( x, y, 1.2f, 0xffffffff, str);
 
-						}
 					}
+				}
 				else {pos=0;cont=0;}
 
-				}
 			}
 		}
+	}
 
 		// homebrew
 		if((flags>>31) & 1)

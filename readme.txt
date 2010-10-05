@@ -96,4 +96,10 @@ v1.14 changelog
 It's a minor update
 - Corrected the spelling and grammar problems of the first release thanks to DJLO
 - changed the icon to what is provided by Iroot
-- The game termination will be done without crashing if user presses the PS button and selects the “Quit Game” menu.
+- The open manager termination will be done without crashing if user presses the PS button and selects the “Quit Game” menu.
+
+v1.14.2 changelog
+------------------
+Another minor update
+- You can now use left arrow and right arrow for page-down and page-up functionality in game list.
+- Free space will be shown below each device and notice that depending on the amount the unit will change to GB,MB,KB or B.

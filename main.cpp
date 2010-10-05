@@ -25,6 +25,7 @@
 #include <cell/codec/pngdec.h>
 #include <cell/cell_fs.h>
 
+
 #include <sysutil/sysutil_sysparam.h>
 #include <sysutil/sysutil_discgame.h>
 #include <sysutil/sysutil_msgdialog.h>
@@ -78,7 +79,7 @@ unsigned cmd_pad= 0;
 
 static void *host_addr;
 
-static int up_count=0, down_count=0;
+static int up_count=0, down_count=0, left_count=0, right_count=0;
 
 u32 new_pad=0,old_pad=0;
 
@@ -2056,6 +2057,57 @@ skip_find_device:
 		} else down_count++;
 			
 	} else down_count=16;
+
+	if ( old_pad & BUTTON_RIGHT ) 
+	{
+		if (right_count>7)
+		{
+			right_count=0;
+			if(game_sel == max_menu_list-1)
+			{
+				game_sel = 0;
+			}
+			else
+			{
+				game_sel = game_sel + 14;
+				if(mode_list==0)
+					{
+					if(game_sel>=max_menu_list) game_sel=max_menu_list-1;
+					}
+				else
+					{
+					if(game_sel>=max_menu_homebrew_list) game_sel=max_menu_homebrew_list-1;
+					}
+			}
+
+		} else right_count++;
+			
+	} else right_count=8;
+
+	if ( old_pad & BUTTON_LEFT ) 
+	{
+		if (left_count>7)
+		{
+		  left_count=0;
+			if(game_sel == 0)
+			{
+				if(mode_list==0)
+					game_sel=max_menu_list-1;
+				else
+					game_sel=max_menu_homebrew_list-1;
+			}
+			else
+			{
+				game_sel = game_sel-14;
+				if(game_sel<0)  
+					game_sel = 0;
+			}
+		} else left_count++;
+	
+	} else left_count=8;
+
+
+
 
     // update the game folder
 	if ((new_pad & BUTTON_START) && (old_pad & BUTTON_L2)){
