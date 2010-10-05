@@ -1,5 +1,4 @@
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -1715,11 +1714,8 @@ int main(int argc, char **argv)
 
 	ret = load_modules();
 
-	uint64_t memvaloriginal = 0x386000014E800020ULL;
-	uint64_t memvalnew = 0xE92296887C0802A6ULL; 
 	
 
-	bool patchmode = false;
 	
     u32 frame_buf_size = DISPLAY_WIDTH * DISPLAY_HEIGHT * 4;
 
@@ -1732,14 +1728,6 @@ int main(int argc, char **argv)
 
 	setRenderColor();
 	cellSysutilRegisterCallback( 0, sysutilCallback, NULL );
-	if(peekq(0x80000000000505d0ULL) == memvaloriginal)
-	{
-		patchmode = false;
-	}
-	else
-	{
-		patchmode = true;
-	}
 	if(!memcmp(hdd_folder,"ASDFGHJKLM",10) && hdd_folder[10]=='N')
 	{
 
@@ -2072,11 +2060,13 @@ skip_find_device:
 				game_sel = game_sel + 14;
 				if(mode_list==0)
 					{
-					if(game_sel>=max_menu_list) game_sel=max_menu_list-1;
+						if(game_sel>=max_menu_list) 
+							game_sel=max_menu_list-1;
 					}
 				else
 					{
-					if(game_sel>=max_menu_homebrew_list) game_sel=max_menu_homebrew_list-1;
+						if(game_sel>=max_menu_homebrew_list) 
+							game_sel=max_menu_homebrew_list-1;
 					}
 			}
 
@@ -2122,24 +2112,6 @@ skip_find_device:
 		counter_png=0;
 		}
 
-	if ((new_pad & BUTTON_R2))
-	{
-		if(peekq(0x80000000000505d0ULL) == memvaloriginal)
-		{
-			pokeq(0x80000000000505d0ULL, memvalnew);
-			patchmode = true;
-		}
-		else
-		{
-			pokeq(0x80000000000505d0ULL, memvaloriginal);
-			patchmode = false;
-			//reset game list
-			old_fi=-1;
-			counter_png=0;
-			forcedevices=(1);
-			game_sel=0;
-		}
-	}
 
 	if ((new_pad & BUTTON_R1) && game_sel>=0 && max_menu_list>0 && mode_list==0){
 
@@ -2804,14 +2776,6 @@ skip_1:
 				}
 
 			setRenderColor();
-			if(patchmode)
-			{
-				cellDbgFontPrintf( 0.5f, 0.07f, 1.2f,0xffffffff,"Patched mode");
-			}
-			else
-			{
-				cellDbgFontPrintf( 0.5f, 0.07f, 1.2f,0xffffffff,"Normal mode");
-			}
 
 			// square for screen
 			draw_square(-1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0x200020ff);

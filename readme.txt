@@ -103,3 +103,7 @@ v1.14.2 changelog
 Another minor update
 - You can now use left arrow and right arrow for page-down and page-up functionality in game list.
 - Free space will be shown below each device and notice that depending on the amount the unit will change to GB,MB,KB or B.
+
+v1.15 changelog
+-------------------
+- Removed that patch mode as it is no longer needed.

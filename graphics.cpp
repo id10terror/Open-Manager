@@ -555,7 +555,7 @@ void draw_device_list(u32 flags)
 				default:
 					sprintf(str, "usb%i", n-1);
 					sprintf(path, "/dev_usb00%d/", n-1);
-					break;
+					break; 
 			}
 			
 			cellFsGetFreeSize(path, &blockSize, &freeSize);
