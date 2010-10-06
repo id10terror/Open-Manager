@@ -107,3 +107,9 @@ Another minor update
 v1.15 changelog
 -------------------
 - Removed that patch mode as it is no longer needed.
+
+v1.16 changelog
+-----------------
+- patched mode returns and now works for hermes V3 and previous versions that include peek/poke calls (v > psgroove 1.1)
+
+Notes: patched mode in hermes V3 is an aggressive mode for those of you who still have problems with hermes v3 normal mode, again do not use patched mode in normal games without issue or for normal operations like FTP/COPY.

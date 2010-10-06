@@ -35,8 +35,11 @@
 
 #include <libftp.h>
 
-
+#include "syscall8.h"
 #include "graphics.h"
+
+
+
 
 char hdd_folder[64]="ASDFGHJKLMN"; // folder for games (deafult string is changed the first time it is loaded
 char hdd_folder_home[64]="OMAN46756"; // folder for homebrew
@@ -1714,7 +1717,8 @@ int main(int argc, char **argv)
 
 	ret = load_modules();
 
-	
+	uint64_t memvaloriginal = 0x386000014E800020ULL;
+	uint64_t memvalnew = 0xE92296887C0802A6ULL; 
 
 	
     u32 frame_buf_size = DISPLAY_WIDTH * DISPLAY_HEIGHT * 4;
@@ -1724,6 +1728,16 @@ int main(int argc, char **argv)
 	if(!text_bmp) exit(-1);
 
 	if(png_out_mapmem( text_bmp, frame_buf_size)) exit(-1);
+	
+	uint64_t patchmode = 2;  //0 -> PS3 perms normally, 1-> Psjailbreak by default, 2-> Special for games as F1 2010 (option by default)
+	if(sys8_enable(0) > 0)
+	{
+		sys8_perm_mode(patchmode);
+	}
+	else
+	{
+		pokeq(0x80000000000505d0ULL, memvaloriginal);
+	}
 
 
 	setRenderColor();
@@ -2100,18 +2114,57 @@ skip_find_device:
 
 
     // update the game folder
-	if ((new_pad & BUTTON_START) && (old_pad & BUTTON_L2)){
+	if ((new_pad & BUTTON_START) && (old_pad & BUTTON_L2))
+	{
 		
 		dir_fixed=0; goto update_game_folder;
-		}
+	}
 
-	 if ( new_pad & BUTTON_START){
+	 if ( new_pad & BUTTON_START)
+	 
+	{
 		game_sel=0;
 		mode_list^=1;
 		old_fi=-1;
 		counter_png=0;
+	}
+	if ((new_pad & BUTTON_R2))
+	{
+		if(sys8_enable(0) < 0)
+		{
+			if(peekq(0x80000000000505d0ULL) == memvaloriginal)
+			{
+				pokeq(0x80000000000505d0ULL, memvalnew);
+				patchmode = 0; //patched
+			}
+			else
+			{
+			pokeq(0x80000000000505d0ULL, memvaloriginal);
+			patchmode = 2; //normal
+			//reset game list
+			old_fi=-1;
+			counter_png=0;
+			forcedevices=(1);
+			game_sel=0;
+			} 
 		}
-
+		else
+		{
+			if (patchmode == 2)
+			{
+				patchmode = 0; //patched
+				sys8_perm_mode(patchmode);
+			}
+			else
+			{
+				patchmode = 2; //normal
+				sys8_perm_mode(patchmode);
+			}
+		}
+		
+		
+		
+	}
 
 	if ((new_pad & BUTTON_R1) && game_sel>=0 && max_menu_list>0 && mode_list==0){
 
@@ -2776,7 +2829,14 @@ skip_1:
 				}
 
 			setRenderColor();
-
+			if(patchmode == 0)
+			{
+				cellDbgFontPrintf( 0.5f, 0.07f, 1.2f,0xffffffff,"Patched mode");
+			}
+			else
+			{
+				cellDbgFontPrintf( 0.5f, 0.07f, 1.2f,0xffffffff,"Normal mode");
+			}			
 			// square for screen
 			draw_square(-1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0x200020ff);
 

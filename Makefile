@@ -3,7 +3,7 @@
 CELL_MK_DIR = $(CELL_SDK)/samples/mk
 include $(CELL_MK_DIR)/sdk.makedef.mk
 
-PPU_SRCS = main.cpp graphics.cpp icon.cpp $(VPSHADER_PPU_OBJS) $(FPSHADER_PPU_OBJS)
+PPU_SRCS = main.cpp graphics.cpp icon.cpp syscall8.c $(VPSHADER_PPU_OBJS) $(FPSHADER_PPU_OBJS)
 PPU_TARGET = open_manager.elf
 
 PPU_INCDIRS	+= -I$(CELL_SDK)/target/ppu/include/sysutil
