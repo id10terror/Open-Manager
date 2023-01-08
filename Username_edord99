@@ -3,7 +3,7 @@ Open Manager v1.0
 
 This application has been made by an anonymous person non seeking fame, profit or benefit.
 
-I don¥t want to cause any damage to the video game industry, but it is not reasonable that these consoles (expensive cost) are constructed like butter and we can not do anything to preserve the health of the lens of our readers (my console model cannot be repaired), While Sony is rubbing his hands when you send to repair a console and them are dedicated to eliminating original features of the console, as PS3 Other OS and Linux, relying on what they think best for your business and not caring a shit or the feelings of their users or their acquired rights as users and owners of their consoles.
+I don¬¥t want to cause any damage to the video game industry, but it is not reasonable that these consoles (expensive cost) are constructed like butter and we can not do anything to preserve the health of the lens of our readers (my console model cannot be repaired), While Sony is rubbing his hands when you send to repair a console and them are dedicated to eliminating original features of the console, as PS3 Other OS and Linux, relying on what they think best for your business and not caring a shit or the feelings of their users or their acquired rights as users and owners of their consoles.
 
  The videogame industry only wants control, oligopoly, money, pursuit of anything that does not benefit their interests and if it is possible, force legal changes using their influence and power while we're just anonymous people we have to endure all the crap on hardware that is passed through a computer, just to avoid taxes.
 
@@ -31,7 +31,7 @@ Open Manager has the next features:
 
 - FTP support to upload homebrew: open_manager uses "OMAN46756" as user, by default. I recommend flashfxp to use it, because FTP support is not very good...
 
-NOTE: Open Manager works with Hermes payload update. So,if you return from game list, apps_home can launch gamaes without one disc (some games don¥t work without any disc), but if you return from Homebrew, apps_home works from usb000
+NOTE: Open Manager works with Hermes payload update. So,if you return from game list, apps_home can launch gamaes without one disc (some games don¬¥t work without any disc), but if you return from Homebrew, apps_home works from usb000
 
 NOTE2: You can modify the program as you want, but please, make public the source code
 
@@ -96,7 +96,7 @@ v1.14 changelog
 It's a minor update
 - Corrected the spelling and grammar problems of the first release thanks to DJLO
 - changed the icon to what is provided by Iroot
-- The open manager termination will be done without crashing if user presses the PS button and selects the ìQuit Gameî menu.
+- The open manager termination will be done without crashing if user presses the PS button and selects the ‚ÄúQuit Game‚Äù menu.
 
 v1.14.2 changelog
 ------------------
